@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.db
+*.sqlite3
+
+# Environments
+.env
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Data & Memory Stores
+data/*.json
+memory/*.json
+
+# Model artifacts
+*.ckpt
+*.bin
+
+# Jupyter / Kaggle
+.ipynb_checkpoints/
+
+# Demo GIFs / recordings
+demo/*.mp4
+demo/*.mov
+
+# Cache
+.cache/
