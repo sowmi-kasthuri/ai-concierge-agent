@@ -1,6 +1,19 @@
 {
-  "facts": [
-    "My favourite color is blue.\n* **Fact:** User's favorite color is blue.",
-    "Okay, I understand.\n\nHere's my analysis of the user message:\n\nThe message \"my favourite colour ?\" expresses a personal preference (favourite colour). This is a stable user preference.\n\n**Response:**\n\nfavourite colour"
+  "notes": [
+    {
+      "id": 1,
+      "text": "Buy sugar"
+    },
+    {
+      "id": 2,
+      "text": "test gemini pipeline"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "text": "Pay broadband bill",
+      "done": false
+    }
   ]
 }
