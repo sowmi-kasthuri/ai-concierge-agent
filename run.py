@@ -1,3 +1,10 @@
+from agent.logging_config import configure_logging
+configure_logging(level="WARNING")
+
+import logging
+logger = logging.getLogger(__name__)
+logger.info("Logging test: run.py started")
+
 from agent.agents.main_agent import MainAgent
 
 def main():
@@ -14,7 +21,16 @@ def main():
             break
 
         result = agent.handle(user_input)
-        print("Agent:", result)
+
+        # --- CLEAN HUMAN OUTPUT ONLY ---
+        if isinstance(result, str):
+            print("Agent:", result)
+        elif isinstance(result, dict):
+            print("Agent:", result.get("output", ""))
+        else:
+            print("Agent:", str(result))
+        # --------------------------------
+
         print()
 
 if __name__ == "__main__":
