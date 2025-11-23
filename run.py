@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 logger.info("Logging test: run.py started")
 
-from agent.agents.main_agent import MainAgent
+from agent.main_agent import MainAgent
 
 def main():
     agent = MainAgent()

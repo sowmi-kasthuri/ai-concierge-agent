@@ -1,126 +1,109 @@
-# AI Concierge Agent  
-Google Agentic AI Capstone Project (Nov 2025)
+# AI Concierge Agent (Clean Notes Engine Edition)
 
-This project implements a personal **Learning & Interview Preparation Concierge Agent** using **Google’s Agent Development Kit (ADK)** and **Gemini**.  
-The goal is to showcase agentic capabilities learned from the 5-Day Google Agents Intensive Program.
-
-The agent supports:
-- Saving and retrieving study notes  
-- Managing tasks through custom MCP tools  
-- Keyword search through a local notes store  
-- Session + persistent memory  
-- A planner → worker multi-agent workflow (A2A)  
-- A reproducible demo via Kaggle Notebook  
+A lightweight multi-LLM agent designed for learning, note-taking, and interview preparation.  
+This version includes a **stable Notes Engine**, **clean separation of concerns**, and **reliable conversational behaviour**.
 
 ---
 
-## 🔧 Tech Stack
-- **Google ADK (Python)**
-- **Gemini API (free tier)**
-- **MCP Local Tools**
-- **JSON-based Memory + Data Store**
-- **Kaggle Notebook for final demo**
+## 🚀 Features
+
+### 1) Dual-LLM Support
+- **Gemini** (Google) for planning and routing (SmartPlanner)
+- **OpenRouter** for high-quality answers (fallback and direct answering)
+
+### 2) Notes Engine (Final Design)
+Supports three deterministic note operations:
+- **A: note previous** — saves a summary of the last assistant answer  
+- **B: note current** — saves a summary of the current Q+A  
+- **C: note all previous** — saves a summary of the full recent conversation  
+
+Plus:
+- `list notes` — view all saved notes  
+- Fully offline summariser (no LLM calls)  
+- Strict filters prevent saving clarifications or meta-text  
+
+### 3) Clean Architecture
+```
+MainAgent
+ ├── SmartPlanner (intent routing)
+ ├── WorkerAgent  (tools + answering)
+ └── NotesEngine  (storage + summarisation)
+```
+
+### 4) Persistence
+All notes stored in:
+```
+agent/memory/memory_store.json
+```
 
 ---
 
-## 🎯 Features (Planned & Delivered)
-### ✔ Delivered
-- ADK setup with working Gemini agent  
-- MCP Tools:
-  - `notes_tool` – store and retrieve notes  
-  - `tasks_tool` – manage TODO items  
-  - `search_tool` – keyword search  
-- Persistent memory (`memory_store.json`)  
-- Session memory (ADK-native)  
-- Multi-agent orchestration:
-  - Planner Agent  
-  - Worker Agent  
-- Logs + simple evaluation checks  
-- Architecture diagram (coming soon)  
-- Kaggle notebook demo  
+## 📦 Setup
 
-### ⏳ Planned Extensions (Post-capstone)
-- CI/CD workflow  
-- More advanced memory (embeddings, FAISS)  
-- Tool authentication (GitHub, Calendar)  
-- Web UI frontend  
+Create `.env` in project root:
 
----
+```
+GEMINI_API_KEY=your_key_here
+OPENROUTER_API_KEY=your_key_here
+GEMINI_MODEL=models/gemini-2.0-flash
+OPENROUTER_MODEL=meta-llama/llama-3.1-70b-instruct
+LLM_PROVIDER=dual
+```
 
-## 📂 Project Structure
-ai-concierge-agent/
-│
-├── agent/
-│ ├── main_agent.py
-│ ├── agents/
-│ │ ├── planner.py
-│ │ └── worker.py
-│ ├── tools/
-│ │ ├── notes_tool.py
-│ │ ├── tasks_tool.py
-│ │ └── search_tool.py
-│ └── memory/
-│ └── memory_store.py
-│
-├── data/
-│ ├── notes.json
-│ └── tasks.json
-│
-├── demo/
-│ └── demo.gif
-│
-├── notebooks/
-│ └── kaggle_demo.ipynb
-│
-├── capstone_plan.md
-├── capstone_plan.pdf
-├── README.md
-└── .gitignore
+Install dependencies:
 
+```
+pip install python-dotenv requests
+pip install google-genai  # optional but recommended
+```
+
+Run the agent:
+
+```
+python run.py
+```
+
+Run tests:
+
+```
+python test_notes.py
+python test_env.py
+python test_agent.py
+```
 
 ---
 
-## 🚀 How to Run Locally
-1. Install Python 3.10+  
-2. Create a virtual environment:
-    python -m venv .venv
-    source .venv/bin/activate # Windows: .venv\Scripts\activate
-3. Install dependencies:
-    pip install -r requirements.txt
-4. Add your Gemini API key to `.env`:
-    GEMINI_API_KEY=your_key_here
-5. Run the demo agent:
-    python agent/main_agent.py
+## 📝 Notes Engine Commands
+
+| User Command Example                | Behaviour                                    |
+|------------------------------------|-----------------------------------------------|
+| `note above`                       | Save summary of previous answer               |
+| `note current response`            | Save summary of Q + current answer            |
+| `note all previous`                | Save summary of entire recent conversation    |
+| `did you note the above?`          | Confirmation → re-save previous summary       |
+| `list notes`                       | Display all notes                             |
 
 ---
 
-## 📘 Kaggle Notebook
-The `kaggle_demo.ipynb` notebook provides:
-- Architecture summary  
-- Lightweight mock demo  
-- Tool examples  
-- Multi-agent example  
-- No secret keys required  
+## ✔ Current Status (23 Nov 2025)
 
----
+- All flows tested  
+- No Q+note confusion  
+- No planner/worker conflict  
+- Notes Engine stable  
 
-## 🏆 Capstone Alignment
-This project demonstrates all 5 concepts required for the Google Agents Capstone:
+This version is safe to push to GitHub.
 
-1. **Agents**  
-2. **Tools (MCP)**  
-3. **Memory**  
-4. **Quality & Evaluation**  
-5. **Multi-Agent Orchestration (A2A)**  
+feat: stabilize NotesEngine and clean multi-LLM agent architecture
 
----
+- Rebuilt NotesEngine (A/B/C modes: previous, current, all)
+- Added offline deterministic summariser
+- Clean separation: SmartPlanner → WorkerAgent → NotesEngine
+- Fixed context window and topic tracking
+- Simplified logic (removed broken Q+note flow)
+- Implemented stable dual-LLM fallback (Gemini → OpenRouter)
+- Updated tests (test_agent, test_notes, test_env)
+- Improved run.py input loop
+- Finalised folder structure under agent/
 
-## 👤 Author
-Sowmi — AI & Software Professional  
-Created as part of the Google Agentic AI Capstone (Nov 2025)
-
----
-
-## 📄 License
-MIT
-
+This is the first fully stable release of the agent.
