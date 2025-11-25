@@ -53,21 +53,15 @@ A lightweight multi-agent personal assistant built using Gemini + OpenRouter. Ha
 
 ## Architecture Diagram (Mermaid)
 
+````markdown
 ```mermaid
-digraph Architecture {
-    rankdir=LR;
-    User [shape=oval, label="User"];
-    MainAgent [shape=box, label="MainAgent"];
-    SmartPlanner [shape=box, label="SmartPlanner"];
-    WorkerAgent [shape=box, label="WorkerAgent"];
-    NotesEngine [shape=box, label="NotesEngine"];
+flowchart LR
+    User([User]) --> MainAgent[MainAgent]
+    MainAgent --> SmartPlanner[SmartPlanner]
+    MainAgent --> WorkerAgent[WorkerAgent]
+    MainAgent --> NotesEngine[NotesEngine]
+    WorkerAgent --> NotesEngine
 
-    User -> MainAgent;
-    MainAgent -> SmartPlanner;
-    MainAgent -> WorkerAgent;
-    MainAgent -> NotesEngine;
-    WorkerAgent -> NotesEngine;
-}
 ```
 
 ---
