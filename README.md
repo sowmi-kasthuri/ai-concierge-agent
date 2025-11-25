@@ -53,7 +53,7 @@ A lightweight multi-agent personal assistant built using Gemini + OpenRouter. Ha
 
 ## Architecture Diagram (Mermaid)
 
-````markdown
+
 ```mermaid
 flowchart LR
     User([User]) --> MainAgent[MainAgent]
@@ -61,7 +61,6 @@ flowchart LR
     MainAgent --> WorkerAgent[WorkerAgent]
     MainAgent --> NotesEngine[NotesEngine]
     WorkerAgent --> NotesEngine
-
 ```
 
 ---
