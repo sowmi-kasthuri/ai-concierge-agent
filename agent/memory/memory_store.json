@@ -1,13 +1,4 @@
 {
-  "notes": [
-    {
-      "id": 1,
-      "text": "By using techniques like semantic search or keyword search to find relevant documents or passages in a database or knowledge graph."
-    },
-    {
-      "id": 2,
-      "text": "Retrieval-Augmented Generation: It enhances LLMs by retrieving information from external knowledge sources and incorporating it into the generated text. By using techniques like semantic search or keyword search to find relevant documents or passages in a database or knowledge graph. Previous noted: By using techniques like semantic search or keyword search to find relevant documents or passages in a database..."
-    }
-  ],
+  "notes": [],
   "tasks": []
 }

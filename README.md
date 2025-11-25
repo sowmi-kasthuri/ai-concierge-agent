@@ -1,109 +1,202 @@
-# AI Concierge Agent (Clean Notes Engine Edition)
+# AI Concierge Agent
 
-A lightweight multi-LLM agent designed for learning, note-taking, and interview preparation.  
-This version includes a **stable Notes Engine**, **clean separation of concerns**, and **reliable conversational behaviour**.
-
----
-
-## 🚀 Features
-
-### 1) Dual-LLM Support
-- **Gemini** (Google) for planning and routing (SmartPlanner)
-- **OpenRouter** for high-quality answers (fallback and direct answering)
-
-### 2) Notes Engine (Final Design)
-Supports three deterministic note operations:
-- **A: note previous** — saves a summary of the last assistant answer  
-- **B: note current** — saves a summary of the current Q+A  
-- **C: note all previous** — saves a summary of the full recent conversation  
-
-Plus:
-- `list notes` — view all saved notes  
-- Fully offline summariser (no LLM calls)  
-- Strict filters prevent saving clarifications or meta-text  
-
-### 3) Clean Architecture
-```
-MainAgent
- ├── SmartPlanner (intent routing)
- ├── WorkerAgent  (tools + answering)
- └── NotesEngine  (storage + summarisation)
-```
-
-### 4) Persistence
-All notes stored in:
-```
-agent/memory/memory_store.json
-```
+A lightweight multi-agent personal assistant built using Gemini + OpenRouter. Handles learning, note-taking, task tracking, and simple conversation flows with deterministic summarisation.
 
 ---
 
-## 📦 Setup
+## Badges
 
-Create `.env` in project root:
+> *(Replace with real badges later if you want)*
+
+* ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
+* ![Python](https://img.shields.io/badge/Python-3.11-blue)
+* ![License](https://img.shields.io/badge/License-MIT-lightgrey)
+
+---
+
+## Features
+
+### Multi-agent architecture
+
+* SmartPlanner (intent classification)
+* WorkerAgent (tools + LLM answering)
+* NotesEngine (A/B/C deterministic notes)
+
+### Dual-LLM setup
+
+* Gemini for planning
+* OpenRouter/Gemini fallback for answers
+
+### Deterministic Notes System
+
+* `note previous` — saves last assistant reply
+* `note current` — saves user-provided Q+A
+* `note all` — summarises entire recent context
+* `list notes` — clean enumeration
+
+### Tasks Engine
+
+* Add tasks
+* List tasks
+
+### Shared JSON Memory Store
+
+* Stored in `agent/memory/memory_store.json`
+
+### Stable, offline-safe behaviour
+
+* No hallucination in notes
+* Planner rule-based fallback
+* End-to-end tested
+
+---
+
+## Architecture Diagram (Mermaid)
+
+```mermaid
+digraph Architecture {
+    rankdir=LR;
+    User [shape=oval, label="User"];
+    MainAgent [shape=box, label="MainAgent"];
+    SmartPlanner [shape=box, label="SmartPlanner"];
+    WorkerAgent [shape=box, label="WorkerAgent"];
+    NotesEngine [shape=box, label="NotesEngine"];
+
+    User -> MainAgent;
+    MainAgent -> SmartPlanner;
+    MainAgent -> WorkerAgent;
+    MainAgent -> NotesEngine;
+    WorkerAgent -> NotesEngine;
+}
+```
+
+---
+
+## Project Structure
 
 ```
-GEMINI_API_KEY=your_key_here
-OPENROUTER_API_KEY=your_key_here
-GEMINI_MODEL=models/gemini-2.0-flash
-OPENROUTER_MODEL=meta-llama/llama-3.1-70b-instruct
-LLM_PROVIDER=dual
+ai-concierge-agent/
+│
+├── agent/
+│   ├── main_agent.py
+│   ├── notes_engine.py
+│   ├── agents/
+│   │   ├── smart_planner.py
+│   │   └── worker_agent.py
+│   ├── llm/
+│   │   ├── gemini_client.py
+│   │   └── openrouter_client.py
+│   └── memory/
+│       └── memory_store.json
+│
+├── run.py
+├── test_agent.py
+├── test_env.py
+├── test_notes.py
+├── test_e2e.py
+├── requirements.txt
+└── README.md
 ```
 
-Install dependencies:
+---
+
+## Setup
+
+1. Create a virtual environment.
+2. Install dependencies:
 
 ```
-pip install python-dotenv requests
-pip install google-genai  # optional but recommended
+pip install -r requirements.txt
 ```
 
-Run the agent:
+3. Add your API keys in `.env`:
+
+```
+GEMINI_API_KEY=...
+OPENROUTER_API_KEY=...
+```
+
+---
+
+## Running the Agent
 
 ```
 python run.py
 ```
 
-Run tests:
+Sample:
 
 ```
-python test_notes.py
-python test_env.py
-python test_agent.py
+You: What is an LLM?
+Agent: An LLM is a Large Language Model...
 ```
 
 ---
 
-## 📝 Notes Engine Commands
+## Notes Commands
 
-| User Command Example                | Behaviour                                    |
-|------------------------------------|-----------------------------------------------|
-| `note above`                       | Save summary of previous answer               |
-| `note current response`            | Save summary of Q + current answer            |
-| `note all previous`                | Save summary of entire recent conversation    |
-| `did you note the above?`          | Confirmation → re-save previous summary       |
-| `list notes`                       | Display all notes                             |
+```
+note previous
+note current
+note all
+list notes
+```
+
+Stored safely in JSON under `agent/memory/memory_store.json`.
 
 ---
 
-## ✔ Current Status (23 Nov 2025)
+## Tasks Commands
 
-- All flows tested  
-- No Q+note confusion  
-- No planner/worker conflict  
-- Notes Engine stable  
+```
+add task <text>
+list tasks
+```
 
-This version is safe to push to GitHub.
+---
 
-feat: stabilize NotesEngine and clean multi-LLM agent architecture
+## Tests
 
-- Rebuilt NotesEngine (A/B/C modes: previous, current, all)
-- Added offline deterministic summariser
-- Clean separation: SmartPlanner → WorkerAgent → NotesEngine
-- Fixed context window and topic tracking
-- Simplified logic (removed broken Q+note flow)
-- Implemented stable dual-LLM fallback (Gemini → OpenRouter)
-- Updated tests (test_agent, test_notes, test_env)
-- Improved run.py input loop
-- Finalised folder structure under agent/
+Run all tests:
 
-This is the first fully stable release of the agent.
+```
+pytest -q
+```
+
+The E2E test validates:
+
+* Q&A flow
+* Notes system
+* Tasks system
+* JSON persistence
+* Planner → Worker routing
+
+---
+
+## Kaggle Notebook Demo
+
+Include a simple notebook under `/notebooks` showing:
+
+* Architecture overview
+* Running the agent
+* Notes flow
+* Tasks flow
+
+---
+
+## Demo GIF Placeholder
+
+Add a 10–15 sec CLI demonstration under `/demo`:
+
+```
+Ask → Answer → note previous → list notes → add task → list tasks
+```
+
+*(GIF to be added later)*
+
+---
+
+## Status
+
+The project is fully functional, end-to-end tested, and ready for capstone submission.
+Optional improvements can be added later: task deletion, tagging, embeddings, UI, WhatsApp/n8n integration.

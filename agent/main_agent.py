@@ -12,7 +12,7 @@ Features:
 - Safe note summarisation
 - Strict separation of responsibilities
 """
-
+import json
 import logging
 from typing import Any, List
 
@@ -173,11 +173,22 @@ class MainAgent:
         result = self.worker.execute(plan)
 
         # Extract answer (worker returns structured dict)
+        #if result.get("status") == "ok":
+        #    answer = (result.get("output") or "").strip()
+        #else:
+        #    # propagate worker error as user-friendly text
+
         if result.get("status") == "ok":
-            answer = (result.get("output") or "").strip()
+            output = result.get("output")
+
+            # Convert dicts/lists into readable text
+            if isinstance(output, (dict, list)):
+                answer = json.dumps(output, indent=2, ensure_ascii=False)
+            else:
+                answer = (str(output or "")).strip()
+
         else:
-            # propagate worker error as user-friendly text
-            answer = result.get("error") or "An error occurred."
+            answer = result.get("error") or "An error occurred."        
 
         # set last_answer ONLY to actual assistant replies (not planner clarifications)
         self.last_answer = answer

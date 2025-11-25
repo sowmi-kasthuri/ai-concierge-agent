@@ -7,10 +7,7 @@ print(eng.note_previous("The generator uses retrieved info to produce context-aw
 print()
 
 print("B. TEST note_current:")
-print(eng.note_current(
-    question="what is rag?",
-    answer="retrieval augmented generation"
-))
+print(eng.note_current("what is rag? retrieval augmented generation"))
 print()
 
 print("C. TEST list:")
